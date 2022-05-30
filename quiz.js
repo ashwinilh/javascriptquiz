@@ -7,11 +7,12 @@
     const quizTimer = document.getElementById('timer');
     const beginButton = document.getElementById('begin');
     const quizMessage = document.getElementById('quizMessage');
-    const previousButton = document.getElementById("previous");
     const nextButton = document.getElementById("next");
     const mainContainer = document.getElementById("mainConatiner");
+    const wrongAnswer = document.getElementById("wrongAnswer");
+    const rightAnswer = document.getElementById("rightAnswer");
 
-    var quizScore = 10;
+    var quizScore = 100;
 
 
 
@@ -71,13 +72,14 @@
         }
 
     ];
-
+    
+    //answer map
     var answerMap = new Map;
     answerMap.set('question0', 'c').
-    set('question1', 'b').
-    set('question2', 'b').
-    set('question3', 'b').
-    set('question4', 'b');
+        set('question1', 'b').
+        set('question2', 'b').
+        set('question3', 'b').
+        set('question4', 'b');
 
     function buildQuiz() {
         const output = [];
@@ -155,12 +157,7 @@
         slides[currentSlide].classList.remove('active-screen');
         slides[n].classList.add('active-screen');
         currentSlide = n;
-        if (currentSlide === 0) {
-            previousButton.style.display = 'none';
-        }
-        else {
-            previousButton.style.display = 'inline-block';
-        }
+
         if (currentSlide === slides.length - 1) {
             nextButton.style.display = 'none';
             submitButton.style.display = 'inline-block';
@@ -175,12 +172,21 @@
         showSlide(currentSlide + 1);
     }
 
-    function showPreviousSlide() {
-        showSlide(currentSlide - 1);
+
+    //remove 20 from quiz score if wrong answer
+    function updateQuizScore() {
+        quizScore = quizScore - 20;
     }
 
-    function updateQuizScore() {
-        quizTimer.innerHTML = quizScore;
+    //quiz count down
+    function quiztimerCountDown() {
+        setInterval(function () {
+            if (quizScore <= 1) {
+                clearInterval(quiztimerCountDown);
+            }
+            quizScore -= 1;
+            quizTimer.innerHTML = quizScore;
+        }, 1000);
     }
 
     function getSelectedAnswer(slectedAnswer) {
@@ -188,25 +194,37 @@
         var answerSelected = slectedAnswer.target.attributes["value"].value;
         var correctAnswer = '';
         correctAnswer = answerMap.get(questionNumber);
-        if(correctAnswer == answerSelected){
-            showNextSlide();
+        //evaluate answer
+        if (correctAnswer == answerSelected) {
+            //showNextSlide();
+            wrongAnswer.style.display = 'none';
+            rightAnswer.style.display = 'inline';
             console.log("correct Answer")
+        }
+        else {
+            wrongAnswer.style.display = 'inline';
+            rightAnswer.style.display = 'none';
+            updateQuizScore();
         }
     }
 
+    
     function beginQuiz() {
         quizMessage.style.display = 'none';
-
+        wrongAnswer.style.display = 'none';
+        rightAnswer.style.display = 'none';
+        quizTimer.innerHTML = quizScore;
+        //quiz timer is set
+        quiztimerCountDown();
         mainContainer.style.display = 'block';
         document.querySelectorAll("input[type='radio']").forEach((input) => {
             input.addEventListener('change', getSelectedAnswer);
         });
+        
     }
+    
     // Kick things off
     buildQuiz();
-    updateQuizScore();
-
-    // Pagination
 
 
     let currentSlide = 0;
@@ -216,10 +234,8 @@
     mainContainer.style.display = 'none';
 
 
-    
     // Event listeners
     submitButton.addEventListener('click', showResults);
-    previousButton.addEventListener("click", showPreviousSlide);
     nextButton.addEventListener("click", showNextSlide);
     beginButton.addEventListener("click", beginQuiz);
 
