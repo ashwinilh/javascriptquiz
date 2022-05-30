@@ -3,20 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Quiz</title>
+    <title>Coding Quiz Chanllenge</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Quiz on Important Facts</h1>
-    <div>Timer:<label id="timer"></label> </div>
-    <div class="quiz-container">
-        <div id="quiz"></div>
+    <h1>Coding Quiz Chanllenge</h1>
+    <div>Quiz Timer/Score :<label id="timer"></label> </div>
+    <div id="quizMessage">
+        <p>
+            This is a quiz to test your progerss in the bootcamp so far. Answer the following multiple choice questions,
+            wrong answer will reduce 15 points from your score.
+            When you are ready click the begin button
+        </p>
+        <button id="begin">Begin</button>
     </div>
-    <button id="previous">Previous Question</button>
-    <button id="next">Next Question</button>
-    <button id="submit">Submit Quiz</button>
-    <div id="results"></div>
+    <div id="mainConatiner">
+        <div class="quiz-container">
+            <div id="quiz"></div>
+        </div>
+        <button id="previous">Previous Question</button>
+        <button id="next">Next Question</button>
+        <button id="submit">Submit Quiz</button>
+        <div id="results"></div>
+    </div>
     <script src="quiz.js"></script>
 </body>
 

@@ -5,6 +5,17 @@
     const resultsContainer = document.getElementById('results');
     const submitButton = document.getElementById('submit');
     const quizTimer = document.getElementById('timer');
+    const beginButton = document.getElementById('begin');
+    const quizMessage = document.getElementById('quizMessage');
+    const previousButton = document.getElementById("previous");
+    const nextButton = document.getElementById("next");
+    const mainContainer = document.getElementById("mainConatiner");
+
+    var quizScore = 10;
+
+
+
+
 
     //array to store all questions
     const quizQuestions = [
@@ -74,8 +85,8 @@
                 for (choice in currentQuestion.answers) {
                     // add an HTML radio button
                     answers.push(
-                                `<label>
-                                <input type="radio" name="question${questionNumber}" value="${choice}">
+                        `<label>
+                                <input type="radio" name="question${questionNumber}" value="${choice}" >
                                 ${choice} :
                                 ${currentQuestion.answers[choice]}
                                 </label>`
@@ -84,7 +95,7 @@
 
                 // add this question and its answers to the output
                 output.push(
-                            `<div class="screen">
+                    `<div class="screen">
                              <div class="question"> ${currentQuestion.question} </div>
                              <div class="answers"> ${answers.join("")} </div>
                              </div>`
@@ -92,7 +103,7 @@
             }
         );
 
-        // finally combine our output list into one string of HTML and put it on the page
+        //add to question container
         quizContainer.innerHTML = output.join('');
     }
 
@@ -124,6 +135,7 @@
             else {
                 // color the answers red
                 answerContainers[questionNumber].style.color = 'red';
+                quizScore = quizScore - 15;
             }
         });
 
@@ -132,6 +144,7 @@
     }
 
     function showSlide(n) {
+        const slides = document.querySelectorAll(".screen");
         slides[currentSlide].classList.remove('active-screen');
         slides[n].classList.add('active-screen');
         currentSlide = n;
@@ -160,24 +173,40 @@
     }
 
     function updateQuizScore() {
-        quizTimer.innerHTML = "75";
+        quizTimer.innerHTML = quizScore;
     }
 
+    function getSelectedAnswer(slectedAnswer) {
+        console.log(slectedAnswer);
+    }
+
+    function beginQuiz() {
+        quizMessage.style.display = 'none';
+
+        mainContainer.style.display = 'block';
+        document.querySelectorAll("input[type='radio']").forEach((input) => {
+            input.addEventListener('change', getSelectedAnswer);
+        });
+    }
     // Kick things off
     buildQuiz();
     updateQuizScore();
 
     // Pagination
-    const previousButton = document.getElementById("previous");
-    const nextButton = document.getElementById("next");
-    const slides = document.querySelectorAll(".screen");
+
+
     let currentSlide = 0;
 
     // Show the first slide
     showSlide(currentSlide);
+    mainContainer.style.display = 'none';
 
+
+    
     // Event listeners
     submitButton.addEventListener('click', showResults);
     previousButton.addEventListener("click", showPreviousSlide);
     nextButton.addEventListener("click", showNextSlide);
+    beginButton.addEventListener("click", beginQuiz);
+
 })();
