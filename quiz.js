@@ -4,6 +4,7 @@
     const quizContainer = document.getElementById('quiz');
     const resultsContainer = document.getElementById('results');
     const submitButton = document.getElementById('submit');
+    const quizTimer = document.getElementById('timer');
 
     //array to store all questions
     const quizQuestions = [
@@ -158,10 +159,13 @@
         showSlide(currentSlide - 1);
     }
 
-
+    function updateQuizScore() {
+        quizTimer.innerHTML = "75";
+    }
 
     // Kick things off
     buildQuiz();
+    updateQuizScore();
 
     // Pagination
     const previousButton = document.getElementById("previous");
