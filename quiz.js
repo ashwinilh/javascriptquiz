@@ -13,6 +13,7 @@
     const rightAnswer = document.getElementById("rightAnswer");
 
     var quizScore = 100;
+    var quizComplete = false;
 
 
 
@@ -159,12 +160,14 @@
         currentSlide = n;
 
         if (currentSlide === slides.length - 1) {
-            nextButton.style.display = 'none';
-            submitButton.style.display = 'inline-block';
+            mainContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            quizComplete = true
+
         }
         else {
-            nextButton.style.display = 'inline-block';
-            submitButton.style.display = 'none';
+            mainContainer.style.display = 'block';
+            resultsContainer.style.display = 'none';
         }
     }
 
@@ -179,10 +182,10 @@
     }
 
     //quiz count down
-    function quiztimerCountDown() {
-        setInterval(function () {
-            if (quizScore <= 1) {
-                clearInterval(quiztimerCountDown);
+    function quizTimerCountDown() {
+        var countDownTimer = setInterval(function () {
+            if (quizScore <= 1 || quizComplete == true) {
+                clearInterval(countDownTimer);
             }
             quizScore -= 1;
             quizTimer.innerHTML = quizScore;
@@ -199,7 +202,6 @@
             //showNextSlide();
             wrongAnswer.style.display = 'none';
             rightAnswer.style.display = 'inline';
-            console.log("correct Answer")
         }
         else {
             wrongAnswer.style.display = 'inline';
@@ -214,8 +216,8 @@
         wrongAnswer.style.display = 'none';
         rightAnswer.style.display = 'none';
         quizTimer.innerHTML = quizScore;
-        //quiz timer is set
-        quiztimerCountDown();
+        //quiz timer is set and quiz status is incomplete
+        quizTimerCountDown();
         mainContainer.style.display = 'block';
         document.querySelectorAll("input[type='radio']").forEach((input) => {
             input.addEventListener('change', getSelectedAnswer);

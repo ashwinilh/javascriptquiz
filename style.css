@@ -43,10 +43,12 @@ button {
 }
 
 button:hover {
-    background-color: #38a;
+    background-color: rgb(127, 173, 190);
 }
 
-
+.submit-button{
+    background-color: green;
+} 
 .screen {
     position: absolute;
     left: 0px;
@@ -62,7 +64,7 @@ button:hover {
     z-index: 2;
 }
 
-.quiz-container {
+.question-container {
     position: relative;
     height: 200px;
     margin-top: 40px;
