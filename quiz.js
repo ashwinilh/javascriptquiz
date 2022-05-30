@@ -72,6 +72,13 @@
 
     ];
 
+    var answerMap = new Map;
+    answerMap.set('question0', 'c').
+    set('question1', 'b').
+    set('question2', 'b').
+    set('question3', 'b').
+    set('question4', 'b');
+
     function buildQuiz() {
         const output = [];
 
@@ -177,7 +184,14 @@
     }
 
     function getSelectedAnswer(slectedAnswer) {
-        console.log(slectedAnswer);
+        var questionNumber = slectedAnswer.target.attributes["name"].value;
+        var answerSelected = slectedAnswer.target.attributes["value"].value;
+        var correctAnswer = '';
+        correctAnswer = answerMap.get(questionNumber);
+        if(correctAnswer == answerSelected){
+            showNextSlide();
+            console.log("correct Answer")
+        }
     }
 
     function beginQuiz() {
