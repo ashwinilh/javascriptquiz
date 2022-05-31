@@ -13,13 +13,12 @@
     const rightAnswer = document.getElementById("rightAnswer");
     const finalScoreToDisplay = document.getElementById("finalScore");
     const participantName = document.getElementById("participantName");
-    
+    const highScoresContainer = document.getElementById("highScores");
+    const scoresList = document.getElementById('scoresList');
+
     var finalScore = 0;
     var quizScore = 100;
     var quizComplete = false;
-
-
-
 
 
     //array to store all questions
@@ -76,7 +75,7 @@
         }
 
     ];
-    
+
     //answer map
     var answerMap = new Map;
     answerMap.set('question0', 'c').
@@ -123,15 +122,17 @@
     function submitResults() {
 
         var quizTopScores = [];
-        if(localStorage.getItem('bootCampTopScore')){
-            quizTopScores = JSON.parse( localStorage.getItem('bootCampTopScore'));
-            quizTopScores.push( participantName.value + '-' + finalScore);
+        if (localStorage.getItem('bootCampTopScore')) {
+            quizTopScores = JSON.parse(localStorage.getItem('bootCampTopScore'));
+            quizTopScores.push(participantName.value + '-' + finalScore);
         }
-        else{
-            quizTopScores.push( participantName.value + '-' + finalScore);
+        else {
+            quizTopScores.push(participantName.value + '-' + finalScore);
         }
         localStorage.setItem('bootCampTopScore', JSON.stringify(quizTopScores));
-        
+        resultsContainer.style.display = 'none';
+        showHighScores();
+
     }
 
     function showSlide(n) {
@@ -157,6 +158,21 @@
 
     function showNextSlide() {
         showSlide(currentSlide + 1);
+    }
+
+    function showHighScores() {
+
+        highScoresContainer.style.display = 'block';
+        highScoresArray = JSON.parse(localStorage.getItem('bootCampTopScore'));
+        var highScoresToDisplay  = [];
+        
+        for (highScore in highScoresArray) {
+            // add an HTML radio button
+            highScoresToDisplay.push(
+                `<div> ${highScoresArray[highScore]} </div>`
+            );
+        }
+        scoresList.innerHTML = highScoresToDisplay.join('');
     }
 
 
@@ -194,11 +210,11 @@
         }
     }
 
-    
     function beginQuiz() {
         quizMessage.style.display = 'none';
         wrongAnswer.style.display = 'none';
         rightAnswer.style.display = 'none';
+        
         quizTimer.innerHTML = quizScore;
         //quiz timer is set and quiz status is incomplete
         quizTimerCountDown();
@@ -206,23 +222,23 @@
         document.querySelectorAll("input[type='radio']").forEach((input) => {
             input.addEventListener('change', getSelectedAnswer);
         });
-        
+
     }
-    
+
     // Kick things off
     buildQuiz();
-
 
     let currentSlide = 0;
 
     // Show the first slide
     showSlide(currentSlide);
     mainContainer.style.display = 'none';
-
+    highScoresContainer.style.display = 'none';
 
     // Event listeners
     submitButton.addEventListener('click', submitResults);
     nextButton.addEventListener("click", showNextSlide);
     beginButton.addEventListener("click", beginQuiz);
+    highScoresContainer.addEventListener('click', showHighScores);
 
 })();
