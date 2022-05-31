@@ -11,7 +11,10 @@
     const mainContainer = document.getElementById("mainConatiner");
     const wrongAnswer = document.getElementById("wrongAnswer");
     const rightAnswer = document.getElementById("rightAnswer");
-
+    const finalScoreToDisplay = document.getElementById("finalScore");
+    const participantName = document.getElementById("participantName");
+    
+    var finalScore = 0;
     var quizScore = 100;
     var quizComplete = false;
 
@@ -117,40 +120,18 @@
         quizContainer.innerHTML = output.join('');
     }
 
-    function showResults() {
+    function submitResults() {
 
-        // gather answer containers from our quiz
-        const answerContainers = quizContainer.querySelectorAll('.answers');
-
-        // keep track of user's answers
-        let numCorrect = 0;
-
-        // for each question...
-        myQuestions.forEach((currentQuestion, questionNumber) => {
-
-            // find selected answer
-            const answerContainer = answerContainers[questionNumber];
-            const selector = `input[name=question${questionNumber}]:checked`;
-            const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
-            // if answer is correct
-            if (userAnswer === currentQuestion.correctAnswer) {
-                // add to the number of correct answers
-                numCorrect++;
-
-                // color the answers green
-                answerContainers[questionNumber].style.color = 'lightgreen';
-            }
-            // if answer is wrong or blank
-            else {
-                // color the answers red
-                answerContainers[questionNumber].style.color = 'red';
-                quizScore = quizScore - 15;
-            }
-        });
-
-        // show number of correct answers out of total
-        resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+        var quizTopScores = [];
+        if(localStorage.getItem('bootCampTopScore')){
+            quizTopScores = JSON.parse( localStorage.getItem('bootCampTopScore'));
+            quizTopScores.push( participantName.value + '-' + finalScore);
+        }
+        else{
+            quizTopScores.push( participantName.value + '-' + finalScore);
+        }
+        localStorage.setItem('bootCampTopScore', JSON.stringify(quizTopScores));
+        
     }
 
     function showSlide(n) {
@@ -162,7 +143,10 @@
         if (currentSlide === slides.length - 1) {
             mainContainer.style.display = 'none';
             resultsContainer.style.display = 'block';
-            quizComplete = true
+            finalScore = quizScore;
+            quizComplete = true;
+            finalScoreToDisplay.innerHTML = finalScore;
+            quizTimer.style.display = 'none';
 
         }
         else {
@@ -237,7 +221,7 @@
 
 
     // Event listeners
-    submitButton.addEventListener('click', showResults);
+    submitButton.addEventListener('click', submitResults);
     nextButton.addEventListener("click", showNextSlide);
     beginButton.addEventListener("click", beginQuiz);
 
