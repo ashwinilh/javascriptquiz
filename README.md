@@ -1,6 +1,6 @@
 # javascriptquiz
-![screen-shot-challenge3](./assets/images/Screenshot quiz-image-1.jpg)
-![screen-shot-challenge3](./assets/images/Screenshot quiz-image-2.jpg)
+![screen-shot-challenge4](./assets/images/Screenshotquiz-image-1.jpg)
+![screen-shot-challenge4](./assets/images/Screenshotquiz-image-2.jpg)
 1. Created folder structure and pushed the code to unique repo "javascriptquiz"  https://github.com/ashwinilh/javascriptquiz
 2. Hosted the repo "javascriptquiz" on github live website with the URL-  https://ashwinilh.github.io/javascriptquiz/
 3. This repo is for challenge 4 of UT boot camp to create html page with multiple choice question format.
